@@ -46,11 +46,11 @@ La documentation contient aussi un excellent résumé pour "[apprendre nftables 
 
 ## Auteurs
 
-Ce texte se réfère au laboratoire « Pare-feu » à suivre dans le cadre du cours Sécurité des Réseaux, 2024, version 10.0.  Au cours du temps, il a été rédigé, modifié et amélioré par les co-auteurs suivants : Gilles-Etienne Vallat, Alexandre Délez, Olivia Manz, Patrick Mast, Christian Buchs, Sylvain Pasini, Vincent Pezzi, Yohan Martini, Ioana Carlson, Abraham Rubinstein, Frédéric Saam et Linus Gasser.
+Ce texte se réfère au laboratoire « Pare-feu » à suivre dans le cadre du cours Sécurité des Réseaux, 2024, version 10.0.  Au cours du temps, il a été rédigé, modifié et amélioré par les co-auteurs suivants : Gilles-Etienne Vallat, Alexandre Délez, Olivia Manz, Patrick Mast, Christian Buchs, Sylvain Pasini, Vincent Pezzi, Yohan Martini, Ioana Carlson, Abraham Rubinstein, Frédéric Saam, Linus Gasser et Lucas Gianinetti.
 
 ## Echéance
 
-Ce travail devra être rendu le dimanche après la fin de la 2ème séance de laboratoire, soit au plus tard, **le mercredi, 20 Mars 2024, à 23h59.**
+Ce travail devra être rendu le mercredi après la fin de la 2ème séance de laboratoire, soit au plus tard, **le mercredi, 20 Mars 2024, à 23h59.**
 
 # Réseaux cible
 
@@ -168,7 +168,7 @@ docker-compose up --detach
 ```
 Le téléchargement et génération d'images prend peu de temps.
 
-Vous pouvez vérifier que les réseaux ont été créés avec la commande `docker network ls`. Un réseau `lan` et un réseau `dmz` devraient se trouver dans la liste.
+Vous pouvez vérifier que les réseaux ont été créés avec la commande `docker network ls`. Un réseau `lan` et un réseau `dmz` devraient se trouver dans la liste. Lors de la création d'un network, docker utilise l'adresse *x.x.x.1* comme gateway entre l'hôte et le network correspondant. C'est pourquoi vous verrez que les adresses IP des interfaces réseau de la machine *firewall* sont en *x.x.x.2*. Vous trouverez les interfaces réseau virtuelles créées par docker pour communiquer avec les différents réseau en utilisant la command *ip address*; les interfaces en question se nomment *br-NETWORK ID*.
 
 Les images utilisées pour les conteneurs sont basées sur l'image officielle Ubuntu. Le fichier `Dockerfile` que vous avez téléchargé contient les informations nécessaires pour la génération de l'image de base. `docker-compose` l'utilise comme un modèle pour générer les conteneurs. Vous pouvez vérifier que les trois conteneurs sont crées et qu'ils fonctionnent à l'aide de la commande suivante:
 
@@ -189,21 +189,21 @@ Afin de simplifier vos manipulations, les conteneurs ont été configurées avec
 Pour accéder au terminal de l’une des machines, il suffit de taper :
 
 ```bash
-docker-compose exec -ti <nom_de_la_machine> /bin/bash
+docker-compose exec <nom_de_la_machine> /bin/bash
 ```
 ou pour une installation docker plus moderne:
 ```bash
-docker compose exec -ti <nom_de_la_machine> /bin/bash
+docker compose exec <nom_de_la_machine> /bin/bash
 ```
 
 Par exemple, pour ouvrir un terminal sur votre firewall :
 
 ```bash
-docker-compose exec -ti firewall /bin/bash
+docker-compose exec firewall /bin/bash
 ```
 ou pour une installation docker plus moderne:
 ```bash
-docker compose exec -ti firewall /bin/bash
+docker compose exec firewall /bin/bash
 ```
 
 Vous pouvez bien évidemment lancer des terminaux avec les trois machines en même temps, ou utiliser 
@@ -325,7 +325,7 @@ Vérifiez que la connexion à l'Internet est maintenant possible depuis les deux
 
 Une règle permet d’autoriser ou d’interdire une connexion. `nftables` met à disposition plusieurs options pour la création de ces règles. En particulier, on peut définir les politiques par défaut, des règles de filtrage pour le firewall ou des fonctionnalités de translation d’adresses (nat). **Vous devriez configurer vos politiques en premier.**
 
-`nftables` vous permet la configuration de pare-feux avec et sans état. **Pour ce laboratoire, vous avez le choix d'utiliser le mode avec état, sans état ou une combinaison des deux**.
+`nftables` vous permet la configuration de pare-feux avec et sans état. **Pour ce laboratoire, vous devez commencer par utiliser le mode sans état. Puis à partir de l'étape *Règles pour le protocole DNS*, vous devez utiliser le mode avec état.**
 
 Chaque règle doit être tapée sur une ligne séparée. Référez-vous à la théorie et appuyez-vous sur des informations trouvées sur Internet pour traduire votre tableau de règles de filtrage en commandes `nftables`. Les règles prennent effet immédiatement après avoir appuyé sur \<enter\>. Vous pouvez donc les tester au fur et à mesure que vous les configurez.
 
