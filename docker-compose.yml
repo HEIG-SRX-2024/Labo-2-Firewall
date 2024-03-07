@@ -49,7 +49,6 @@ services:
 networks:
     1lan:
         driver: "bridge"
-        internal: true
         name: 1lan
         ipam:
             config:
@@ -58,7 +57,6 @@ networks:
                  #gateway: 192.168.100.2
     2dmz:
         driver: "bridge"
-        internal: true
         name: 2dmz
         ipam:
             config:
